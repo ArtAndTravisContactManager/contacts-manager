@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileHandler {
     private Path directory;
@@ -15,6 +18,8 @@ public class FileHandler {
         this.filename = Paths.get(directory, filename);
         createFile();
     }
+
+
 
     protected void createFile (){
         createDirectory();
@@ -40,6 +45,23 @@ public class FileHandler {
 
     public String getFilePath() {
         return filename.toString();
+    }
+
+    public boolean writeToFile(List<String> contacts){
+        try {
+            Files.write(this.filename, contacts, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<String> readFromFile(){
+        try {
+            return Files.readAllLines(filename);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }
 
