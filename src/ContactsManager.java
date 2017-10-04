@@ -39,12 +39,29 @@ public class ContactsManager {
                 addNewContact(contacts);
                 displayContacts(contacts);
                 break;
-
-
+            case 3:
+                String searchName = console.getString("What is the name of the contact you are looking for?: ");
+                int index = searchContact(contacts, searchName);
+                if (index >= 0) {
+                    System.out.printf("Name: %s\nPhone Number: %s\n",
+                            contacts.get(index).getName(), contacts.get(index).getPhoneNumber());
+                } else {
+                    System.out.printf("User '%s' was not found!\n", searchName);
+                }
+                break;
         }
     }
 
-    private static void addNewContact(ArrayList<Contact> contacts) {
+    public static int searchContact(ArrayList<Contact> contacts, String searchName) {
+        for(int i = 0; i < contacts.size(); i++) {
+            if (contacts.get(i).getName().equals(searchName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static void addNewContact(ArrayList<Contact> contacts) {
         String name = console.getString("Please Enter contact's name:");
         String phoneNumber = console.getString("Please enter contact's phone number:");
         contacts.add(new Contact(name, phoneNumber));
