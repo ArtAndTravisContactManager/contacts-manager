@@ -9,22 +9,22 @@ import java.util.List;
 public class FileHandlerTest {
 
     public static void main(String[] args) {
-        FileHandler fh = new FileHandler("./resources", "test.txt");
+        FileHandler fh = new FileHandler("./resources", "contacts.txt");
         fh.createFile();
 
 //        System.out.println(fh.getFilePath());
 
         List<String> contacts = new ArrayList<>();
-        contacts.add("Art");
-        contacts.add("Travis");
-        contacts.add("Michael");
+        contacts.add("Art,(210)555-5678");
+        contacts.add("Travis,(361)444-4567");
+        contacts.add("Michael(512)333-3456");
 
         List<String>FileContents =  fh.readFromFile();
         for(String line: FileContents) {
             System.out.println(line);
         }
 
-//        fh.writeToFile(contacts);
+        fh.writeToFile(contacts);
 
 //        Files.write(Paths, contacts, StandardOpenOption.APPEND);
     }
