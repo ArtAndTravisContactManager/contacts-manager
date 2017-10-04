@@ -13,9 +13,12 @@ public class FileHandler {
     public FileHandler(String directory, String filename) {
         this.directory = Paths.get(directory);
         this.filename = Paths.get(directory, filename);
+        createFile();
     }
 
-    public void createFile (){
+    protected void createFile (){
+        createDirectory();
+
         try {
             if (Files.notExists(filename)) {
                 Files.createFile(filename);
@@ -23,7 +26,20 @@ public class FileHandler {
         } catch (IOException e){
             System.out.println(e.getMessage());
         }
+    }
 
+    protected void createDirectory() {
+        try {
+            if(Files.notExists(directory)) {
+                Files.createDirectory(directory);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public String getFilePath() {
+        return filename.toString();
     }
 }
 
