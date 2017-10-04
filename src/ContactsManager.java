@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsManager {
+       public static Input console = new Input();
+
     public static void main(String[] args) {
         // Show all contacts
         // Add a new contact
@@ -13,7 +15,6 @@ public class ContactsManager {
         ArrayList<Contact> contacts = new ArrayList<>();
         FileHandler contactsFile = new FileHandler("./resources", "contacts.txt");
         List<String> contactsFileContents = contactsFile.readFromFile();
-        Input console = new Input();
         int userChoice;
 
         contactsFile.getFilePath();
@@ -25,7 +26,7 @@ public class ContactsManager {
             Contact currentContact = new Contact(name, phoneNumber);
             contacts.add(currentContact);
         }
-
+    // ***Possible refactoring per #2 in menu***
         displayMenu();
         userChoice = console.getInt(1, 5, "Enter an option (1, 2, 3, 4, or 5): ");
         System.out.println();
@@ -34,8 +35,19 @@ public class ContactsManager {
             case 1:
                 displayContacts(contacts);
                 break;
+            case 2:
+                addNewContact(contacts);
+                displayContacts(contacts);
+                break;
+
 
         }
+    }
+
+    private static void addNewContact(ArrayList<Contact> contacts) {
+        String name = console.getString("Please Enter contact's name:");
+        String phoneNumber = console.getString("Please enter contact's phone number:");
+        contacts.add(new Contact(name, phoneNumber));
     }
 
     public static void displayContacts(ArrayList<Contact> contacts) {
