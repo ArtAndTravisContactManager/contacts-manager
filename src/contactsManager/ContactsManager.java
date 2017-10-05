@@ -1,6 +1,11 @@
+package contactsManager;
+
+
+
 import util.FileHandler;
 import util.Input;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +30,8 @@ public class ContactsManager {
     // ***Possible refactoring per #2 in menu***
         do {
             displayMenu();
-            userChoice = console.getInt(1, 5, "Enter an option (1, 2, 3, 4, or 5):\n ");
-            System.out.println("You entered: " + userChoice);
+            userChoice = console.getInt(1, 5, "Enter an option (1, 2, 3, 4, or 5):\n >" );
+
             System.out.println();
 
 
@@ -45,7 +50,7 @@ public class ContactsManager {
                     break;
                 // Search a contact by name
                 case 3:
-                    String searchName = console.getString("What is the name of the contact you are looking for?: ");
+                    String searchName = console.getString("What is the name of the contact you are looking for?:\n ");
                     int index = searchContact(contacts, searchName);
                     if (index >= 0) {
                         System.out.printf("Name: %s\nPhone Number: %s\n",
@@ -58,19 +63,36 @@ public class ContactsManager {
                 // Delete an existing contact
                 case 4:
                     displayContacts(contacts);
-                    String contactToDelete = console.getString("Enter the contact's name to delete: ");
-                    if (deleteContact(contacts, contactToDelete)) {
-                        System.out.println("Contact deleted successfully.");
-                    } else {
-                        System.out.println("Unable to delete contact by that name.");
+                    System.out.println();
+                    String contactToDelete = console.getString("Enter the contact's name to delete:\n ");
+                    if (console.yesNo("Are you sure you want to delete " + contactToDelete + " ?\n")) {
+                        if (deleteContact(contacts, contactToDelete)) {
+                            System.out.println("Contact deleted successfully.");
+                        } else {
+                            System.out.println("Unable to delete contact by that name.");
+                        }
                     }
                     break;
                 // Exit
                 case 5:
+                    System.out.println("Saving contacts... Thank you for using the contacts menu.");
+                    saveContacts(contacts, contactsFile);
+                    System.exit(0);
                     break;
             }
-        } while(console.yesNo("Would you like another option? (y/n)"));
+        } while(console.yesNo("Would you like another option? (y/n)\n >"));
+        System.out.println("Goodbye");
+            saveContacts(contacts, contactsFile);
 
+    }
+
+    private static void saveContacts(ArrayList<Contact> contacts, FileHandler contactsFile) {
+        List<String> contentsToWrite = new ArrayList<>();
+
+        for (Contact contactToWrite : contacts) {
+            contentsToWrite.add(String.format("%s,%s", contactToWrite.getName(), contactToWrite.getPhoneNumber()));
+        }
+        contactsFile.writeToFile(contentsToWrite);
     }
 
     public static boolean deleteContact(ArrayList<Contact> contacts, String contactToDelete) {
