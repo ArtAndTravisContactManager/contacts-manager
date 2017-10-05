@@ -31,19 +31,19 @@ public class ContactsManager {
 
 
             switch (userChoice) {
-                //View contacts
+                // View contacts
                 case 1:
                     displayContacts(contacts);
                     System.out.println();
 
                     break;
-                //Add a new contact
+                // Add a new contact
                 case 2:
                     addNewContact(contacts);
                     displayContacts(contacts);
                     System.out.println();
                     break;
-                //Search a contact by name
+                // Search a contact by name
                 case 3:
                     String searchName = console.getString("What is the name of the contact you are looking for?: ");
                     int index = searchContact(contacts, searchName);
@@ -55,10 +55,10 @@ public class ContactsManager {
                         System.out.println();
                     }
                     break;
-                //Delete an existing contact
+                // Delete an existing contact
                 case 4:
                     break;
-                //Exit
+                // Exit
                 case 5:
                     break;
             }
