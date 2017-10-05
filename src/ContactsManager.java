@@ -57,6 +57,13 @@ public class ContactsManager {
                     break;
                 // Delete an existing contact
                 case 4:
+                    displayContacts(contacts);
+                    String contactToDelete = console.getString("Enter the contact's name to delete: ");
+                    if (deleteContact(contacts, contactToDelete)) {
+                        System.out.println("Contact deleted successfully.");
+                    } else {
+                        System.out.println("Unable to delete contact by that name.");
+                    }
                     break;
                 // Exit
                 case 5:
@@ -64,6 +71,17 @@ public class ContactsManager {
             }
         } while(console.yesNo("Would you like another option? (y/n)"));
 
+    }
+
+    public static boolean deleteContact(ArrayList<Contact> contacts, String contactToDelete) {
+        int index = searchContact(contacts, contactToDelete);
+
+        if (index < 0) {
+            return false;
+        }
+
+        contacts.remove(index);
+        return true;
     }
 
     public static int searchContact(ArrayList<Contact> contacts, String searchName) {
