@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.List;
+
+
+
 
 public class FileHandler {
     private Path directory;
@@ -49,7 +50,7 @@ public class FileHandler {
 
     public boolean writeToFile(List<String> contacts){
         try {
-            Files.write(this.filename, contacts, StandardOpenOption.APPEND);
+            Files.write(this.filename, contacts);
         } catch (IOException e) {
             return false;
         }
