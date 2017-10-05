@@ -25,6 +25,8 @@ public class ContactsManager {
     // ***Possible refactoring per #2 in menu***
         do {
             displayMenu();
+            userChoice = console.getInt(1, 5, "Enter an option (1, 2, 3, 4, or 5):\n ");
+            System.out.println("You entered: " + userChoice);
             System.out.println();
 
 
