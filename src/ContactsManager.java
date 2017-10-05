@@ -8,10 +8,6 @@ public class ContactsManager {
        public static Input console = new Input();
 
     public static void main(String[] args) {
-        // Show all contacts
-        // Add a new contact
-        // Search contacts by name
-        // Delete existing contact
         ArrayList<Contact> contacts = new ArrayList<>();
         FileHandler contactsFile = new FileHandler("./resources", "contacts.txt");
         List<String> contactsFileContents = contactsFile.readFromFile();
@@ -27,29 +23,45 @@ public class ContactsManager {
             contacts.add(currentContact);
         }
     // ***Possible refactoring per #2 in menu***
-        displayMenu();
-        userChoice = console.getInt(1, 5, "Enter an option (1, 2, 3, 4, or 5): ");
-        System.out.println();
+        do {
+            displayMenu();
+            System.out.println();
 
-        switch (userChoice) {
-            case 1:
-                displayContacts(contacts);
-                break;
-            case 2:
-                addNewContact(contacts);
-                displayContacts(contacts);
-                break;
-            case 3:
-                String searchName = console.getString("What is the name of the contact you are looking for?: ");
-                int index = searchContact(contacts, searchName);
-                if (index >= 0) {
-                    System.out.printf("Name: %s\nPhone Number: %s\n",
-                            contacts.get(index).getName(), contacts.get(index).getPhoneNumber());
-                } else {
-                    System.out.printf("User '%s' was not found!\n", searchName);
-                }
-                break;
-        }
+
+            switch (userChoice) {
+                //View contacts
+                case 1:
+                    displayContacts(contacts);
+                    System.out.println();
+
+                    break;
+                //Add a new contact
+                case 2:
+                    addNewContact(contacts);
+                    displayContacts(contacts);
+                    System.out.println();
+                    break;
+                //Search a contact by name
+                case 3:
+                    String searchName = console.getString("What is the name of the contact you are looking for?: ");
+                    int index = searchContact(contacts, searchName);
+                    if (index >= 0) {
+                        System.out.printf("Name: %s\nPhone Number: %s\n",
+                                contacts.get(index).getName(), contacts.get(index).getPhoneNumber());
+                    } else {
+                        System.out.printf("User '%s' was not found!\n", searchName);
+                        System.out.println();
+                    }
+                    break;
+                //Delete an existing contact
+                case 4:
+                    break;
+                //Exit
+                case 5:
+                    break;
+            }
+        } while(console.yesNo("Would you like another option? (y/n)"));
+
     }
 
     public static int searchContact(ArrayList<Contact> contacts, String searchName) {
@@ -62,8 +74,8 @@ public class ContactsManager {
     }
 
     public static void addNewContact(ArrayList<Contact> contacts) {
-        String name = console.getString("Please Enter contact's name:");
-        String phoneNumber = console.getString("Please enter contact's phone number:");
+        String name = console.getString("Please Enter contact's name:\n");
+        String phoneNumber = console.getString("Please enter contact's phone number:\n");
         contacts.add(new Contact(name, phoneNumber));
     }
 
@@ -82,6 +94,8 @@ public class ContactsManager {
         System.out.println("3. Search a contact by name.");
         System.out.println("4. Delete an existing contact.");
         System.out.println("5. Exit.");
+        System.out.println();
+
     }
 }
 
