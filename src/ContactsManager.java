@@ -48,13 +48,12 @@ public class ContactsManager {
                 // Search a contact by name
                 case 3:
                     String searchName = console.getString("What is the name of the contact you are looking for?:\n ");
-                    int index = searchContact(contacts, searchName);
-                    if (index >= 0) {
+
+                    searchName = filterContacts(contacts, searchName);
+                    if (searchName.length() > 0) {
+                        int index = searchContact(contacts, searchName);
                         System.out.printf("Name: %s\nPhone Number: %s\n",
-                                contacts.get(index).getName(), contacts.get(index).getPhoneNumber());
-                    } else {
-                        System.out.printf("User '%s' was not found!\n", searchName);
-                        System.out.println();
+                                contacts.get(index).getFullName(), contacts.get(index).getPhoneNumber());
                     }
                     break;
                 // Delete an existing contact
@@ -83,6 +82,32 @@ public class ContactsManager {
 
     }
 
+    public static String filterContacts(ArrayList<Contact> contacts, String filterName) {
+        ArrayList<String> searchResults = new ArrayList<>();
+
+        for(Contact currentContact : contacts) {
+            if (currentContact.getFullName().toLowerCase().contains(filterName.toLowerCase())) {
+                searchResults.add(currentContact.getFullName());
+            }
+        }
+
+        switch(searchResults.size()) {
+            case 0:
+                System.out.println("No contact could be located by that name.");
+                return "";
+            case 1:
+                return searchResults.get(0);
+            default:
+                System.out.println("We found the following contacts:");
+                for (int i = 0; i < searchResults.size(); i++) {
+                    System.out.printf("%d.) %s\n", i + 1, searchResults.get(i));
+                }
+
+                int userChoice = console.getInt(1, searchResults.size(), "\nWhich contact would you like?: ") - 1;
+                return searchResults.get(userChoice);
+        }
+    }
+
     public static String[] phoneNumberFormat (String phoneNumber) {
         String areaCode = phoneNumber.substring (0,3);
         String primaryNumber = phoneNumber.substring(3,6);
@@ -94,7 +119,8 @@ public class ContactsManager {
         List<String> contentsToWrite = new ArrayList<>();
 
         for (Contact contactToWrite : contacts) {
-            contentsToWrite.add(String.format("%s,%s,%s", contactToWrite.getName(), contactToWrite.getLastName() ,contactToWrite.getPhoneNumber()));
+            contentsToWrite.add(String.format("%s,%s,%s",
+                    contactToWrite.getFirstName(), contactToWrite.getLastName() ,contactToWrite.getPhoneNumber()));
         }
         contactsFile.writeToFile(contentsToWrite);
     }
@@ -112,7 +138,7 @@ public class ContactsManager {
 
     public static int searchContact(ArrayList<Contact> contacts, String searchName) {
         for(int i = 0; i < contacts.size(); i++) {
-            if (contacts.get(i).getName().equals(searchName)) {
+            if (contacts.get(i).getFullName().equals(searchName)) {
                 return i;
             }
         }
@@ -135,7 +161,7 @@ public class ContactsManager {
         System.out.println("Name | Phone Number ");
         System.out.println("---------------------------------");
         for (Contact contact: contacts){
-            System.out.println(contact.getName() + " " + contact.getLastName() + " | " + contact.getPhoneNumber());
+            System.out.println(contact.getFirstName() + " " + contact.getLastName() + " | " + contact.getPhoneNumber());
         }
     }
 
