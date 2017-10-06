@@ -17,7 +17,7 @@ public class FileHandlerTest {
         List<String> contacts = new ArrayList<>();
         contacts.add("Art Valdez,(210)555-5678");
         contacts.add("Travis Payne,(361)444-4567");
-        contacts.add("Michael Jordan(512)333-3456");
+        contacts.add("Michael Jordan,(512)333-3456");
 
         List<String>FileContents =  fh.readFromFile();
         for(String line: FileContents) {

@@ -13,16 +13,18 @@ public class ContactsManager {
         List<String> contactsFileContents = contactsFile.readFromFile();
         int userChoice;
 
+
         contactsFile.getFilePath();
 
         for (String line : contactsFileContents) {
             String[] parts = line.split(",");
             String name = parts[0];
-            String phoneNumber = parts[1];
-            Contact currentContact = new Contact(name, phoneNumber);
+            String lastName = parts[1];
+            String phoneNumber = parts[2];
+            Contact currentContact = new Contact(name, lastName, phoneNumber);
             contacts.add(currentContact);
         }
-    // ***Possible refactoring per #2 in menu***
+
         do {
             displayMenu();
             userChoice = console.getInt(1, 5, "Enter an option (1, 2, 3, 4, or 5):\n" );
@@ -75,17 +77,24 @@ public class ContactsManager {
                     System.exit(0);
                     break;
             }
-        } while(console.yesNo("Would you like another option? (y/n)\n >"));
+        } while(console.yesNo("Would you like another option? (y/n)\n"));
         System.out.println("Goodbye");
             saveContacts(contacts, contactsFile);
 
+    }
+
+    public static String[] phoneNumberFormat (String phoneNumber) {
+        String areaCode = phoneNumber.substring (0,3);
+        String primaryNumber = phoneNumber.substring(3,6);
+        String lastPartOfNumber = phoneNumber.substring(6);
+        return new String[]{areaCode, primaryNumber, lastPartOfNumber};
     }
 
     private static void saveContacts(ArrayList<Contact> contacts, FileHandler contactsFile) {
         List<String> contentsToWrite = new ArrayList<>();
 
         for (Contact contactToWrite : contacts) {
-            contentsToWrite.add(String.format("%s,%s", contactToWrite.getName(), contactToWrite.getPhoneNumber()));
+            contentsToWrite.add(String.format("%s,%s,%s", contactToWrite.getName(), contactToWrite.getLastName() ,contactToWrite.getPhoneNumber()));
         }
         contactsFile.writeToFile(contentsToWrite);
     }
@@ -111,16 +120,22 @@ public class ContactsManager {
     }
 
     public static void addNewContact(ArrayList<Contact> contacts) {
-        String name = console.getString("Please Enter contact's name:\n");
+        String name = console.getString("Please Enter contact's first name:\n");
+        String lname = console.getString("Please Enter contact's last name:\n");
         String phoneNumber = console.getString("Please enter contact's phone number:\n");
-        contacts.add(new Contact(name, phoneNumber));
+        String[] phoneNumberList = phoneNumberFormat(phoneNumber);
+        phoneNumber = ("(" + phoneNumberList[0] + ")" + phoneNumberList[1] + " - " + phoneNumberList[2]);
+        System.out.println(name);
+        System.out.println(lname);
+        System.out.println(phoneNumber);
+        contacts.add(new Contact(name, lname, phoneNumber));
     }
 
     public static void displayContacts(ArrayList<Contact> contacts) {
         System.out.println("Name | Phone Number ");
         System.out.println("---------------------------------");
         for (Contact contact: contacts){
-            System.out.println(contact.getName() + " | " + contact.getPhoneNumber());
+            System.out.println(contact.getName() + " " + contact.getLastName() + " | " + contact.getPhoneNumber());
         }
     }
 
