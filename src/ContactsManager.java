@@ -1,7 +1,9 @@
+import com.sun.deploy.util.StringUtils;
 import util.FileHandler;
 import util.Input;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ContactsManager {
@@ -24,7 +26,7 @@ public class ContactsManager {
             Contact currentContact = new Contact(name, lastName, phoneNumber);
             contacts.add(currentContact);
         }
-
+        System.out.println("Welcome to your Contacts Manager!\n");
         do {
             displayMenu();
             userChoice = console.getInt(1, 5, "Enter an option (1, 2, 3, 4, or 5):\n" );
@@ -158,22 +160,21 @@ public class ContactsManager {
     }
 
     public static void displayContacts(ArrayList<Contact> contacts) {
-        System.out.println("Name | Phone Number ");
-        System.out.println("---------------------------------");
+        System.out.printf("%-30s | %14s  |\n", "Name" ,"Phone Number");
+        System.out.println(String.join("", Collections.nCopies(51, "-")));
         for (Contact contact: contacts){
-            System.out.println(contact.getFirstName() + " " + contact.getLastName() + " | " + contact.getPhoneNumber());
+            //System.out.println(contact.getFirstName() + " " + contact.getLastName() + " | " + contact.getPhoneNumber());
+            System.out.printf("%-30s | %15s |\n", contact.getFullName(), contact.getPhoneNumber());
         }
     }
 
     public static void displayMenu() {
-        System.out.println("Welcome to your Contacts Manager!\n");
         System.out.println("1. View contacts.");
         System.out.println("2. Add a new contact.");
         System.out.println("3. Search a contact by name.");
         System.out.println("4. Delete an existing contact.");
         System.out.println("5. Exit.");
         System.out.println();
-
     }
 }
 
