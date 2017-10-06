@@ -13,6 +13,7 @@ public class ContactsManager {
         List<String> contactsFileContents = contactsFile.readFromFile();
         int userChoice;
 
+
         contactsFile.getFilePath();
 
         for (String line : contactsFileContents) {
@@ -75,10 +76,17 @@ public class ContactsManager {
                     System.exit(0);
                     break;
             }
-        } while(console.yesNo("Would you like another option? (y/n)\n >"));
+        } while(console.yesNo("Would you like another option? (y/n)\n"));
         System.out.println("Goodbye");
             saveContacts(contacts, contactsFile);
 
+    }
+
+    public static String[] phoneNumberFormat (String phoneNumber) {
+        String areaCode = phoneNumber.substring (0,3);
+        String primaryNumber = phoneNumber.substring(3,6);
+        String lastPartOfNumber = phoneNumber.substring(6);
+        return new String[]{areaCode, primaryNumber, lastPartOfNumber};
     }
 
     private static void saveContacts(ArrayList<Contact> contacts, FileHandler contactsFile) {
@@ -113,6 +121,8 @@ public class ContactsManager {
     public static void addNewContact(ArrayList<Contact> contacts) {
         String name = console.getString("Please Enter contact's name:\n");
         String phoneNumber = console.getString("Please enter contact's phone number:\n");
+        String[] phoneNumberList = phoneNumberFormat(phoneNumber);
+        phoneNumber = ("(" + phoneNumberList[0] + ")" + phoneNumberList[1] + " - " + phoneNumberList[2]);
         contacts.add(new Contact(name, phoneNumber));
     }
 
